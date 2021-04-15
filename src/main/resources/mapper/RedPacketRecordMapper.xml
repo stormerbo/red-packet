@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ddlover.redpacket.mapper.RedPacketRecordMapper">
+
+  <!-- 通用查询映射结果 -->
+  <resultMap id="BaseResultMap" type="cn.ddlover.redpacket.entity.RedPacketRecord">
+    <id column="red_packet_record_id" property="redPacketRecordId"/>
+    <result column="red_packet_id" property="redPacketId"/>
+    <result column="user_id" property="userId"/>
+    <result column="money" property="money"/>
+    <result column="serial_no" property="serialNo"/>
+    <result column="create_time" property="createTime"/>
+  </resultMap>
+
+  <!-- 通用查询结果列 -->
+  <sql id="Base_Column_List">
+    red_packet_record_id,red_packet_id, user_id, money,serial_no, create_time
+  </sql>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="redPacketRecordId" keyColumn="red_packet_record_id">
+    insert into red_packet_record(red_packet_id, user_id, money, serial_no)
+    values (#{redPacketId}, #{userId}, #{money}, #{serialNo})
+  </insert>
+  <insert id="batchInsert">
+    insert into red_packet_record(red_packet_id, user_id, money,serial_no)
+    values
+    <foreach collection="list" item="record" separator="," open="(" close=")">
+      #{record.redPacketId}, #{record.userId}, #{record.money},#{record.serialNo}
+    </foreach>
+  </insert>
+  <select id="countBySerialNo" resultType="java.lang.Integer">
+    select count(*)
+    from red_packet_record
+    where serial_no = #{serialNo}
+  </select>
+
+</mapper>
